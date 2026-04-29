@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kopi 16 Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        margin: 0;
+        font-family: "Montserrat", sans-serif;
+        background-color: #f8f9fa;
+        padding: 0;
+  box-sizing: border-box;
+      }
+
+      .header {
+        background-color: #490303;
+        color: white;
+        text-align: center;
+        padding: 20px 15px;
+      }
+
+         .header h2 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 2rem;
+      }
+
+      .pdf-viewer {
+        width: 100%;
+        height: calc(100vh - 160px);
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #f8f9fa;
+        scroll-behavior: smooth;
+      }
+
+      canvas {
+        margin: 20px auto;
+        max-width: 95%;
+        height: auto;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+      }
+
+      /* Loader */
+      #loader {
+        text-align: center;
+        padding: 40px;
+        font-weight: 600;
+        color: #490303;
+        animation: blink 1.2s infinite;
+      }
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+
+      /* WhatsApp Button */
+      .floating-btn {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        background: #f73737;
+        color: #fffee3;
+        border: none;
+        border-radius: 50px;
+        padding: 14px 26px;
+        font-size: 16px;
+        font-weight: 600;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .floating-btn:hover {
+        background: #490303;
+        color: #fff;
+        transform: translateY(-2px);
+      }
+
+      /* Move Up Button */
+      .back-to-top {
+        position: fixed;
+        bottom: 25px;
+        left: 25px;
+        background-color: #490303;
+        color: #fff;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        font-size: 22px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .back-to-top.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .back-to-top:hover {
+        background-color: #f73737;
+        transform: translateY(-3px);
+      }
+
+
+/* Pastikan loader menutupi seluruh layar dan kontennya di tengah */
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Menggunakan viewport width untuk cakupan penuh */
+  height: 100vh; /* Menggunakan viewport height untuk cakupan penuh */
+  background-color: #f8f9fa; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Menengahkan secara vertikal */
+  align-items: center;     /* Menengahkan secara horizontal */
+  z-index: 9999;           /* Pastikan berada paling depan */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.loading-animation {
+  width: 200px; /* Sesuaikan ukuran jika dirasa kurang besar */
+  height: auto;
+  display: block; /* Memastikan diperlakukan sebagai elemen blok */
+  margin: 0 auto; /* Tambahan untuk menengahkan secara horizontal */
+  animation: run-bounce 0.6s infinite ease-in-out;
+}
+
+#loader p {
+  margin-top: 20px;
+  font-weight: 700;
+  color: #490303;
+  text-align: center; /* Menengahkan teks di dalam paragraf */
+}
+
+/* Animasi Berlari */
+@keyframes run-bounce {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+}
+    </style>
+  </head>
+
+  <body>
+    <header class="header">
+      <h2>BIRTDAY PACKAGE KOPI 16 PRO</h2>
+    </header>
+
+    <!-- Loader -->
+    <div id="loader">
+      <img src="static/loading party.png" alt="Loading..." class="loading-animation">
+      <p>Loading...</p>
+    </div>
+
+    <main class="pdf-viewer" id="pdf-viewer"></main>
+
+    <!-- WhatsApp Button -->
+    <a
+      href="https://api.whatsapp.com/send?phone=6282177881616&text=Kak+mau+reservasi+birtday+party+dong+%F0%9F%98%84"
+      target="_blank"
+      class="floating-btn"
+    >
+      <i class="fab fa-whatsapp mr-2"></i> Reservasi
+    </a>
+
+    <!-- Move Up Button -->
+    <a href="#" class="back-to-top" id="backToTop">
+      <i class="fa fa-angle-up"></i>
+    </a>
+
+    <!-- ✅ Optimized PDF.js -->
+    <script type="module">
+      import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs";
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs";
+
+      const url = "static/birthday_party.pdf"; // path PDF
+      const container = document.getElementById("pdf-viewer");
+      const loader = document.getElementById("loader");
+      const backToTopBtn = document.getElementById("backToTop");
+
+      // ✅ Progressive streaming
+      const loadingTask = pdfjsLib.getDocument({
+        url,
+        rangeChunkSize: 1048576, // 64KB per chunk
+      });
+
+      loadingTask.promise.then(async (pdf) => {
+        // Render helper
+        const renderPage = async (num) => {
+          const page = await pdf.getPage(num);
+          const viewport = page.getViewport({ scale: 1.4 });
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+          container.appendChild(canvas);
+          await page.render({ canvasContext: context, viewport }).promise;
+        };
+
+        // 🚀 Tampilkan halaman pertama secepatnya
+        await renderPage(1);
+        loader.remove();
+
+        // Lazy load halaman sisanya
+        for (let i = 2; i <= pdf.numPages; i++) {
+          setTimeout(() => renderPage(i), 400 * (i - 1)); // 0.4 detik jeda antar halaman
+        }
+      });
+
+      // Tombol scroll ke atas
+      container.addEventListener("scroll", () => {
+        if (container.scrollTop > 300) {
+          backToTopBtn.classList.add("show");
+        } else {
+          backToTopBtn.classList.remove("show");
+        }
+      });
+
+      backToTopBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        container.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      // ... kode pemanggilan pdfjsLib tetap sama ...
+
+loadingTask.promise.then(async (pdf) => {
+  // Render helper
+  const renderPage = async (num) => {
+    const page = await pdf.getPage(num);
+    const viewport = page.getViewport({ scale: 1.4 });
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+    container.appendChild(canvas);
+    await page.render({ canvasContext: context, viewport }).promise;
+  };
+
+  // Mulai render halaman pertama
+  await renderPage(1);
+
+  // Paksa loader tampil selama minimal 2 detik
+  setTimeout(() => {
+    const loader = document.getElementById("loader");
+    if (loader) {
+      loader.style.transition = "opacity 0.5s ease";
+      loader.style.opacity = "0";
+      setTimeout(() => loader.remove(), 500); // Hapus dari DOM setelah fade out
+    }
+  }, 2000); // 2000ms = 2 detik
+
+  // Lazy load halaman sisanya
+  for (let i = 2; i <= pdf.numPages; i++) {
+    setTimeout(() => renderPage(i), 400 * (i - 1));
+  }
+});
+    </script>
+  </body>
+</html>
