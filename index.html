@@ -207,6 +207,7 @@
     </a>
 
     <!-- ✅ Optimized PDF.js -->
+
     <script type="module">
       import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs";
       pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -214,7 +215,6 @@
 
       const url = "static/birthday_party.pdf"; // path PDF
       const container = document.getElementById("pdf-viewer");
-      const loader = document.getElementById("loader");
       const backToTopBtn = document.getElementById("backToTop");
 
       // ✅ Progressive streaming
@@ -236,13 +236,22 @@
           await page.render({ canvasContext: context, viewport }).promise;
         };
 
-        // 🚀 Tampilkan halaman pertama secepatnya
+        // Mulai render halaman pertama secepatnya
         await renderPage(1);
-        loader.remove();
 
-        // Lazy load halaman sisanya
+        // Paksa loader animasi kopi tampil selama minimal 2 detik
+        setTimeout(() => {
+          const loader = document.getElementById("loader");
+          if (loader) {
+            loader.style.transition = "opacity 0.5s ease";
+            loader.style.opacity = "0";
+            setTimeout(() => loader.remove(), 500); // Hapus dari layar setelah fade out
+          }
+        }, 2000); // 2000ms = 2 detik
+
+        // Lazy load halaman sisanya (halaman 2 dan seterusnya)
         for (let i = 2; i <= pdf.numPages; i++) {
-          setTimeout(() => renderPage(i), 400 * (i - 1)); // 0.4 detik jeda antar halaman
+          setTimeout(() => renderPage(i), 400 * (i - 1));
         }
       });
 
@@ -259,40 +268,8 @@
         e.preventDefault();
         container.scrollTo({ top: 0, behavior: "smooth" });
       });
-
-      // ... kode pemanggilan pdfjsLib tetap sama ...
-
-loadingTask.promise.then(async (pdf) => {
-  // Render helper
-  const renderPage = async (num) => {
-    const page = await pdf.getPage(num);
-    const viewport = page.getViewport({ scale: 1.4 });
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-    container.appendChild(canvas);
-    await page.render({ canvasContext: context, viewport }).promise;
-  };
-
-  // Mulai render halaman pertama
-  await renderPage(1);
-
-  // Paksa loader tampil selama minimal 2 detik
-  setTimeout(() => {
-    const loader = document.getElementById("loader");
-    if (loader) {
-      loader.style.transition = "opacity 0.5s ease";
-      loader.style.opacity = "0";
-      setTimeout(() => loader.remove(), 500); // Hapus dari DOM setelah fade out
-    }
-  }, 2000); // 2000ms = 2 detik
-
-  // Lazy load halaman sisanya
-  for (let i = 2; i <= pdf.numPages; i++) {
-    setTimeout(() => renderPage(i), 400 * (i - 1));
-  }
-});
     </script>
+
+
   </body>
 </html>
